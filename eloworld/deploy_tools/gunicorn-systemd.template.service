@@ -1,0 +1,13 @@
+[Unit]
+Description=Gunicorn server for SITENAME
+
+[Service]
+Restart=on-failure
+User=mark
+WorkingDirectory=/home/mark/sites/SITENAME/source
+ExecStart=/home/mark/sites/SITENAME/source/virtualenv/bin/gunicorn \
+    --bind unix:/tmp/SITENAME.socket \
+    eloworld.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
