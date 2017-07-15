@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block cont %}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 jumbotron">
+        <div class="text-center">
+            <h1>Start a new League</h1>
+            <form method="POST" action="/l/new">
+                <input name="league_name" id="id_new_league"
+                class="form-control input-lg"
+                placeholder="Create a new league"
+                />
+                {% csrf_token %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

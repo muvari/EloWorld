@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block cont %}
+<div class="row">
+    <div class="col-lg-6">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <th>Name</th>
+                    <th>Matches</th>
+                    <th>PD</th>
+                    <th>Rating</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Mark</td>
+                        <td>21</td>
+                        <td>+5.2</td>
+                        <td>1824</td>
+                    </tr>
+                    <tr>
+                        <td>Bas</td>
+                        <td>212</td>
+                        <td>+1</td>
+                        <td>1502</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div>
+            <form id="form1" method="POST" action="/l/{{ league.name }}/add_match">
+            <div class="col-sm-6">
+            <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Red</span>
+            <input type="text" id="redname" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
+            </div>
+            </div>
+            <div class="col-sm-3">
+            <div class="input-group">
+            <input type="number" id="redscore" class="form-control" placeholder="Score" aria-describedby="basic-addon1">
+            </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">Blue</span>
+                <input type="text" id="bluename" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
+                </div>
+                </div>
+                <div class="col-sm-3">
+                <div class="input-group">
+                <input type="number" id="bluescore" class="form-control" placeholder="Score" aria-describedby="basic-addon1">
+                </div>
+                </div>
+            <div class="col-sm-9">
+            <button class="btn btn-primary" type="submit">
+                Add Match 
+            </button>
+            </div>
+             {% csrf_token %}
+            </form>
+        </div>
+        <div class="match_history">
+            <table class="table table-striped">
+                <thead>
+                    <th>Date</th>
+                    <th>Red</th>
+                    <th></th>
+                    <th></th>
+                    <th>Blue</th>
+                </thead>
+                <tbody>
+                {% for match in league.matches.all %}
+                    <tr><td>{{ forloop.counter }}: {{ match.time }}</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
