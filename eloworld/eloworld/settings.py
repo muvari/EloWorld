@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'cd$dvnuz8gqprb%va@j$3-1+7hhs9p+g@yz1oo13-$cto)!l@f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["eloworld.net"]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -120,4 +120,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, '../static'))
-from .secret_key import SECRET_KEY
