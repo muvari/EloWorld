@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from leagues.models import League, Match, Player, MatchParticipant
-import datetime
+import datetime, math
 
 def home_page(request):
     return render(request, 'home.html')
@@ -23,7 +23,7 @@ def view_league(request, league_name):
                 opponent_points += m.matchparticipant_set.all()[0].score
 
         diff = (total_points - opponent_points) / p.matches.count()
-        diffStr = str(round(diff, 2))
+        diffStr = str(round(diff, 1))
         if diff > 0:
             diffStr = '+' + diffStr
 
@@ -39,8 +39,8 @@ def new_league(request):
     
 def add_match(request, league_name):
     league_ = League.objects.get(name=league_name)
-    redScore = request.POST.get("redscore", 0)
-    blueScore = request.POST.get("bluescore", 0)
+    redScore = int(request.POST.get("redscore", 0))
+    blueScore = int(request.POST.get("bluescore", 0))
     redPlayer, rcreated = Player.objects.get_or_create(name=request.POST.get("redname", ""), league=league_)
     bluePlayer, bcreated = Player.objects.get_or_create(name=request.POST.get("bluename", ""), league=league_)
     newMatch = Match.objects.create(time=datetime.datetime.now(), league=league_)
@@ -53,8 +53,17 @@ def add_match(request, league_name):
     redExp = expected(redRating, blueRating)
     blueExp = expected(blueRating, redRating)
 
-    newRedElo = elo(redRating, redExp, redScore < blueScore)
-    newBlueElo = elo(blueRating, blueExp, blueScore < redScore)
+    if redScore > blueScore:
+        winRating = redScore
+        loseRating = blueScore
+    else:
+        winRating = blueScore
+        loseRating = redScore
+
+    km = k_mult(abs(redScore - blueScore), winRating, loseRating)
+
+    newRedElo = elo(redRating, redExp, redScore > blueScore, km)
+    newBlueElo = elo(blueRating, blueExp, blueScore > redScore, km)
 
     redPlayer.rating = newRedElo
     bluePlayer.rating = newBlueElo
@@ -72,7 +81,7 @@ def expected(A, B):
     return 1 / (1 + 10 ** ((B - A) / 400))
 
 
-def elo(old, exp, score, k=32):
+def elo(old, exp, score, k_mult=1, k=32):
     """
     Calculate the new Elo rating for a player
     :param old: The previous Elo rating
@@ -80,4 +89,8 @@ def elo(old, exp, score, k=32):
     :param score: The actual score for this match
     :param k: The k-factor for Elo (default: 32)
     """
-    return old + k * (score - exp)
+    return old + (k*k_mult) * (score - exp)
+
+def k_mult(diff, winRating, loseRating):
+    #LN(ABS(PD)+1) * (2.2/((ELOW-ELOL)*.001+2.2))
+    return math.log(abs(diff) + 1) * (2.2 / ((winRating - loseRating)*.001+2.2))

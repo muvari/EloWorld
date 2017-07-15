@@ -5,14 +5,14 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>EloWorld</title>
-        <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/auto-complete.css" rel="stylesheet">
+        <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet">
         <link href="/static/base.css" rel="stylesheet">
     </head>
 
     <body>
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default" id="navBar">
     <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
             <span class="sr-only">Toggle navigation</span>
@@ -22,8 +22,11 @@
         </button>
         <a class="navbar-brand" href="#">EloWorld</a>
         </div>
+        <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://github.com/muvari/EloWorld">Github</a></li>
+        </ul>
     </nav>
-    <div class="container">
+    <div class="container" id="container">
         {% block cont %}
         {% endblock %}
     </div>

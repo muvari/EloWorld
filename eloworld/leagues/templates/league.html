@@ -2,10 +2,12 @@
 
 {% block cont %}
 <div class="row">
-    <div class="col-lg-6">
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
+    <h1>{{league.name}}</h1>
+    <div class="col-lg-6 form-group">
+        <div class="row">
+            <h2>Ranking</h2>
+            <table class="table">
+                <thead class="thead-inverse">
                     <th>Name</th>
                     <th>Matches</th>
                     <th>PD</th>
@@ -23,12 +25,13 @@
             </table>
         </div>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-6 form-group">
         <div class="row">
-            <form id="form1" method="POST" action="/l/{{ league.name }}/add_match">
+            <h2>Add Match</h2>
+            <form id="form1" method="POST" action="/l/{{ league.name }}/add_match" class="form-inline">
             <div class="col-sm-6">
             <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1">Red</span>
+            <span class="input-group-addon redinput" id="basic-addon1">Red</span>
             <input type="text" required name="redname" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
             </div>
             </div>
@@ -39,7 +42,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">Blue</span>
+                <span class="input-group-addon blueinput" id="basic-addon1">Blue</span>
                 <input type="text" required name="bluename" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
                 </div>
                 </div>
@@ -49,9 +52,11 @@
                 </div>
                 </div>
             <div class="col-sm-9">
+                <div class="text-center">
             <button class="btn btn-primary" type="submit">
+                <span class="glyphicon glyphicon-plus"></span>
                 Add Match 
-            </button>
+            </button></div>
             </div>
              {% csrf_token %}
             </form>
@@ -59,8 +64,8 @@
         <div class="row" name="match_history">
             <br/>
             <h2>Match History</h2>
-            <table class="table table-striped">
-                <thead>
+            <table class="table" >
+                <thead class="thead-inverse">
                     <th>Date</th>
                     <th>Red</th>
                     <th></th>

@@ -1,3 +1,36 @@
-#id_new_item {
-    margin-top: 2ex;
+body {
+    background-color: #fff
+}
+
+#navBar {
+    background-color: #5cb85c;
+}
+.navbar-brand {
+    color: #fff
+}
+
+button{
+  margin: 12px 12px 12px 10px;
+}
+
+tr:hover {
+    background-color: #d9edf7
+}
+
+td, th {
+    text-align: center
+}
+
+.input-group {
+   margin: 4px 4px 4px 4px; 
+}
+
+.redinput {
+    background-color: #c9302c;
+    color: #fff
+}
+
+.blueinput {
+    background-color: #337ab7;
+    color: #fff
 }
