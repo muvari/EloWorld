@@ -6,16 +6,17 @@ REPO_URL = 'https://github.com/muvari/EloWorld.git'
 
 def deploy():
     site_folder = f'/home/{env.user}/sites/{env.host}/source'   
-    source_folder = site_folder + '/eloworld'
-    _create_directory_structure_if_necessary(site_folder)
-    _get_latest_source(source_folder)
+    source_folder = site_folder
+    _get_latest_source(source_folder)    
+    _create_directory_structure_if_necessary(site_folder)    
+    source_folder = source_folder + '/eloworld'
     _update_settings(source_folder, env.host)  
     _update_virtualenv(source_folder)
     _update_static_files(source_folder)
     _update_database(source_folder)
 
 def _create_directory_structure_if_necessary(site_folder):
-    for subfolder in ('database', 'static', 'virtualenv', 'source'):
+    for subfolder in ('database', 'static', 'virtualenv'):
         run(f'mkdir -p {site_folder}/{subfolder}') 
 
 def _get_latest_source(source_folder):
