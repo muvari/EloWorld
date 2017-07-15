@@ -29,28 +29,28 @@
         </div>
     </div>
     <div class="col-lg-6">
-        <div>
+        <div class="row">
             <form id="form1" method="POST" action="/l/{{ league.name }}/add_match">
             <div class="col-sm-6">
             <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Red</span>
-            <input type="text" id="redname" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
+            <input type="text" required name="redname" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
             </div>
             </div>
             <div class="col-sm-3">
             <div class="input-group">
-            <input type="number" id="redscore" class="form-control" placeholder="Score" aria-describedby="basic-addon1">
+            <input type="number" required name="redscore" class="form-control" placeholder="Score" aria-describedby="basic-addon1">
             </div>
             </div>
             <div class="col-sm-6">
                 <div class="input-group">
                 <span class="input-group-addon" id="basic-addon1">Blue</span>
-                <input type="text" id="bluename" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
+                <input type="text" required name="bluename" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
                 </div>
                 </div>
                 <div class="col-sm-3">
                 <div class="input-group">
-                <input type="number" id="bluescore" class="form-control" placeholder="Score" aria-describedby="basic-addon1">
+                <input type="number" required name="bluescore" class="form-control" placeholder="Score" aria-describedby="basic-addon1">
                 </div>
                 </div>
             <div class="col-sm-9">
@@ -61,7 +61,9 @@
              {% csrf_token %}
             </form>
         </div>
-        <div class="match_history">
+        <div class="row" name="match_history">
+            <br/>
+            <h2>Match History</h2>
             <table class="table table-striped">
                 <thead>
                     <th>Date</th>
@@ -71,8 +73,13 @@
                     <th>Blue</th>
                 </thead>
                 <tbody>
-                {% for match in league.matches.all %}
-                    <tr><td>{{ forloop.counter }}: {{ match.time }}</td></tr>
+                {% for match in league.matches.all reversed%}
+                    <tr><td>{{ match.time }}</td>
+                        <td>{{ match.matchparticipant_set.all.0.player.name}}</td>
+                        <td>{{ match.matchparticipant_set.all.0.score}}</td>
+                        <td>{{ match.matchparticipant_set.all.1.score}}</td>
+                        <td>{{ match.matchparticipant_set.all.1.player.name}}</td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>

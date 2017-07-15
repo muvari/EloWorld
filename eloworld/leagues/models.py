@@ -2,10 +2,10 @@ from django.db import models
 
 # Create your models here.
 class League(models.Model):
-    name = models.TextField(default='')
+    name = models.TextField(default='', max_length=20)
 
 class Player(models.Model):
-    name = models.TextField(default='')
+    name = models.TextField(default='', max_length=20)
     rating = models.IntegerField(default=1500)
 
 class Match(models.Model):
