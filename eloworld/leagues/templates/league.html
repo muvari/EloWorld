@@ -12,18 +12,13 @@
                     <th>Rating</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Mark</td>
-                        <td>21</td>
-                        <td>+5.2</td>
-                        <td>1824</td>
+                {% for player in player_list %}
+                    <tr><td>{{ player.name }}</td>
+                        <td>{{ player.matches }}</td>
+                        <td>{{ player.diff }}</td>
+                        <td>{{ player.rating }}</td>
                     </tr>
-                    <tr>
-                        <td>Bas</td>
-                        <td>212</td>
-                        <td>+1</td>
-                        <td>1502</td>
-                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>

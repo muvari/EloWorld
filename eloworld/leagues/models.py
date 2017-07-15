@@ -7,9 +7,10 @@ class League(models.Model):
 class Player(models.Model):
     name = models.TextField(default='', max_length=20)
     rating = models.IntegerField(default=1500)
+    league = models.ForeignKey(League, related_name='players', default=None)
 
 class Match(models.Model):
-    players = models.ManyToManyField(Player, through='MatchParticipant')
+    players = models.ManyToManyField(Player, related_name="matches", through='MatchParticipant')
     time = models.DateTimeField()
     league = models.ForeignKey(League, related_name='matches', default=None)
 
