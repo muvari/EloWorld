@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 class League(models.Model):
     name = models.TextField(default='', max_length=20)
+    label = models.TextField(default='', max_length=40)
 
 class Player(models.Model):
     name = models.TextField(default='', max_length=20)

@@ -1,5 +1,6 @@
 body {
-    background-color: #fff
+    background-color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #navBar {
@@ -13,14 +14,32 @@ button{
   margin: 12px 12px 12px 10px;
 }
 
-tr:hover {
-    background-color: #d9edf7
+body {
+    background-color: #fff
 }
-
 td, th {
-    text-align: center
+    text-align: center;
+    font-weight: bold;
 }
-
+tr:hover {
+    background-color: #CEE9CE
+}
+th {
+    background-color: #5cb85c;
+    color: white;
+}
+.match_date {
+    text-align: left;
+}
+.red_table {
+    background-color: #FFB7B3
+}
+.blue_table {
+    background-color: #9EE5FF;
+}
+.score {
+    font-size: 125%;
+}
 .input-group {
    margin: 4px 4px 4px 4px; 
 }
@@ -33,4 +52,12 @@ td, th {
 .blueinput {
     background-color: #337ab7;
     color: #fff
+}
+
+.add_match_row {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 2px;
+    padding: 4px;
+    background-color: #eee;
 }

@@ -2,7 +2,7 @@
 
 {% block cont %}
 <div class="row">
-    <h1>{{league.name}}</h1>
+    <h1>{{league.label}}</h1>
     <div class="col-lg-6 form-group">
         <div class="row">
             <h2>Ranking</h2>
@@ -10,7 +10,7 @@
                 <thead class="thead-inverse">
                     <th>Name</th>
                     <th>Matches</th>
-                    <th>PD</th>
+                    <th>Avg +/-</th>
                     <th>Rating</th>
                 </thead>
                 <tbody>
@@ -18,7 +18,7 @@
                     <tr><td>{{ player.name }}</td>
                         <td>{{ player.matches }}</td>
                         <td>{{ player.diff }}</td>
-                        <td>{{ player.rating }}</td>
+                        <td class="score">{{ player.rating }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -26,33 +26,33 @@
         </div>
     </div>
     <div class="col-lg-6 form-group">
-        <div class="row">
+        <div class="row add_match_row">
             <h2>Add Match</h2>
             <form id="form1" method="POST" action="/l/{{ league.name }}/add_match" class="form-inline">
-            <div class="col-sm-6">
+            <div class="col-lg-8">
             <div class="input-group">
             <span class="input-group-addon redinput" id="basic-addon1">Red</span>
             <input type="text" required name="redname" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
             </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-lg-4">
             <div class="input-group">
             <input type="number" required name="redscore" class="form-control" placeholder="Score" aria-describedby="basic-addon1">
             </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-lg-8">
                 <div class="input-group">
                 <span class="input-group-addon blueinput" id="basic-addon1">Blue</span>
                 <input type="text" required name="bluename" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
                 </div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-lg-4">
                 <div class="input-group">
                 <input type="number" required name="bluescore" class="form-control" placeholder="Score" aria-describedby="basic-addon1">
                 </div>
                 </div>
-            <div class="col-sm-9">
-                <div class="text-center">
+            <div class="col-lg-12">
+                <div class="row text-center">
             <button class="btn btn-primary" type="submit">
                 <span class="glyphicon glyphicon-plus"></span>
                 Add Match 
@@ -74,11 +74,11 @@
                 </thead>
                 <tbody>
                 {% for match in league.matches.all reversed%}
-                    <tr><td>{{ match.time }}</td>
-                        <td>{{ match.matchparticipant_set.all.0.player.name}}</td>
-                        <td>{{ match.matchparticipant_set.all.0.score}}</td>
-                        <td>{{ match.matchparticipant_set.all.1.score}}</td>
-                        <td>{{ match.matchparticipant_set.all.1.player.name}}</td>
+                    <tr><td class="match_date">{{ match.time }}</td>
+                        <td class="red_table">{{ match.matchparticipant_set.all.0.player.name}}</td>
+                        <td class="red_table score">{{ match.matchparticipant_set.all.0.score}}</td>
+                        <td class="blue_table score">{{ match.matchparticipant_set.all.1.score}}</td>
+                        <td class="blue_table">{{ match.matchparticipant_set.all.1.player.name}}</td>
                     </tr>
                 {% endfor %}
                 </tbody>

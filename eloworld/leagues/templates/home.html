@@ -4,12 +4,19 @@
 <div class="row">
     <div class="col-md-6 col-md-offset-3 jumbotron">
         <div class="text-center">
-            <h1>Join/Create League</h1>
+            <h2>Join/Create League</h2>
             <form method="POST" action="/l/new">
                 <input required name="league_name" id="id_new_league"
                 class="form-control input-lg"
-                placeholder="Join/Create a league"
+                placeholder="Name (alphanumeric only)" pattern="[a-zA-Z0-9]+"
                 />
+                <input required name="league_label" id="label_new_league"
+                class="form-control input-lg"
+                placeholder="Label"
+                />
+                <button class="btn btn-primary" type="submit">
+                Continue
+                </button>
                 {% csrf_token %}
             </form>
         </div>
