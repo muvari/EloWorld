@@ -34,9 +34,11 @@ def view_league(request, league_name):
     return render(request, 'league.html', {'league': league_, 'player_list': player_list, 'playernames' : playernames })
     
 def new_league(request):
-    league_, created = League.objects.get_or_create(name=request.POST['league_name'])
-    if created:
+    lName = request.POST['league_name'].lower()
+    league_, created = League.objects.get_or_create(name=lName)
+    if created==True:
         league_.label = request.POST['league_label']
+    league_.save()
     return redirect(f'/l/{league_.name}/')
     
 def add_match(request, league_name):
