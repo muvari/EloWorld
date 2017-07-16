@@ -1,4 +1,20 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block scripts %}
+<script>
+$( function() {
+    var names = {{playernames|safe}};
+    $( "#redname" ).autocomplete({
+      source: names
+    });
+    $( "#bluename" ).autocomplete({
+      source: names
+    });
+  } );
+
+
+</script>
+{% endblock %}
 
 {% block cont %}
 <div class="row">
@@ -32,7 +48,7 @@
             <div class="col-lg-8">
             <div class="input-group">
             <span class="input-group-addon redinput" id="basic-addon1">Red</span>
-            <input type="text" required name="redname" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
+            <input type="text" required id="redname" name="redname" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
             </div>
             </div>
             <div class="col-lg-4">
@@ -43,7 +59,7 @@
             <div class="col-lg-8">
                 <div class="input-group">
                 <span class="input-group-addon blueinput" id="basic-addon1">Blue</span>
-                <input type="text" required name="bluename" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
+                <input type="text" id="bluename" required name="bluename" class="form-control" placeholder="Name" aria-describedby="basic-addon1">
                 </div>
                 </div>
                 <div class="col-lg-4">

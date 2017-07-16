@@ -30,8 +30,8 @@ def view_league(request, league_name):
         p_list = {'name': p.name, 'matches': p.matches.count(), 'diff': diffStr, 'rating': p.rating}
         player_list.append(p_list)
 
-
-    return render(request, 'league.html', {'league': league_, 'player_list': player_list })
+    playernames = list(players.values_list('name', flat=True))
+    return render(request, 'league.html', {'league': league_, 'player_list': player_list, 'playernames' : playernames })
     
 def new_league(request):
     league_, created = League.objects.get_or_create(name=request.POST['league_name'])
