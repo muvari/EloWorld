@@ -64,7 +64,12 @@ def add_match(request, league_name):
         winRating = redRating
         loseRating = blueRating
 
-    km = k_mult(min(6, abs(redScore - blueScore)), winRating, loseRating)
+    if redScore + blueScore > 18:
+        diff = 1
+    else:
+        diff = abs(redScore - blueScore)
+
+    km = k_mult(min(6, diff), winRating, loseRating)
 
     newRedElo = elo(redRating, redExp, redScore > blueScore, km)
     newBlueElo = elo(blueRating, blueExp, blueScore > redScore, km)
