@@ -31,7 +31,11 @@ def view_league(request, league_name):
         player_list.append(p_list)
 
     playernames = list(players.values_list('name', flat=True))
-    return render(request, 'league.html', {'league': league_, 'player_list': player_list, 'playernames' : playernames })
+    past_20_matches = league_.matches.order_by('-time')[:20]
+    return render(request, 'league.html', {'league': league_, 
+                                            'player_list': player_list, 
+                                            'playernames' : playernames, 
+                                            'matches' : past_20_matches })
     
 def new_league(request):
     lName = request.POST['league_name'].lower()

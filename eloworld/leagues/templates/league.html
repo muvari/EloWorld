@@ -80,6 +80,7 @@ $( function() {
         <div class="row" name="match_history">
             <br/>
             <h2>Match History</h2>
+            <h6>(past 20 games)</h6>
             <table class="table" >
                 <thead class="thead-inverse">
                     <th>Date</th>
@@ -89,7 +90,7 @@ $( function() {
                     <th>Blue</th>
                 </thead>
                 <tbody>
-                {% for match in league.matches.all reversed%}
+                {% for match in matches%}
                     <tr><td class="match_date">{{ match.time }}</td>
                         <td class="red_table">{{ match.matchparticipant_set.all.0.player.name}}</td>
                         <td class="red_table score">{{ match.matchparticipant_set.all.0.score}}</td>
