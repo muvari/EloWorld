@@ -25,16 +25,14 @@ $( function() {
             <table class="table">
                 <thead class="thead-inverse">
                     <th>Name</th>
-                    <th>Matches</th>
-                    <th>Avg +/-</th>
+                    <th>Weekly Δ</th>
                     <th>Rating</th>
                 </thead>
                 <tbody>
                 {% for player in player_list %}
-                    <tr><td>{{ player.name }}</td>
-                        <td>{{ player.matches }}</td>
-                        <td>{{ player.diff }}</td>
-                        <td class="score">{{ player.rating }}</td>
+                    <tr><td class="col-md-8 col-sm-8">{{ player.name }}</td>
+                        <td class="col-md-2 col-sm-2">{{ player.last }}</td>
+                        <td class="col-md-2 col-sm-2 score" >{{ player.rating }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -84,18 +82,18 @@ $( function() {
             <table class="table" >
                 <thead class="thead-inverse">
                     <th>Date</th>
-                    <th>Red</th>
+                    <th>Red (Δ)</th>
                     <th></th>
                     <th></th>
-                    <th>Blue</th>
+                    <th>Blue (Δ)</th>
                 </thead>
                 <tbody>
                 {% for match in matches%}
                     <tr><td class="match_date">{{ match.time }}</td>
-                        <td class="red_table">{{ match.matchparticipant_set.all.0.player.name}}</td>
+                        <td class="red_table">{{ match.matchparticipant_set.all.0.player.name}} ({{ match.matchparticipant_set.all.0.delta}})</td>
                         <td class="red_table score">{{ match.matchparticipant_set.all.0.score}}</td>
                         <td class="blue_table score">{{ match.matchparticipant_set.all.1.score}}</td>
-                        <td class="blue_table">{{ match.matchparticipant_set.all.1.player.name}}</td>
+                        <td class="blue_table">{{ match.matchparticipant_set.all.1.player.name}} ({{ match.matchparticipant_set.all.1.delta}})</td>
                     </tr>
                 {% endfor %}
                 </tbody>

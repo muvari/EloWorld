@@ -11,27 +11,21 @@ def view_league(request, league_name):
     player_list = []
     players = league_.players.order_by('-rating')
     for p in players:
-        total_points = 0
-        opponent_points = 0
-        diff = 0.0
-        for m in p.matches.all():
-            if p.name == m.matchparticipant_set.all()[0].player.name:
-                total_points += m.matchparticipant_set.all()[0].score
-                opponent_points += m.matchparticipant_set.all()[1].score
-            else:
-                total_points += m.matchparticipant_set.all()[1].score
-                opponent_points += m.matchparticipant_set.all()[0].score
+        history = list(p.get_rating_history().order_by('date_created'))
+        if len(history) > 1:
+            last = p.rating - history[len(history) - 2].field_value 
+        else:
+            last = p.rating - 1500
 
-        diff = (total_points - opponent_points) / p.matches.count()
-        diffStr = str(round(diff, 1))
-        if diff > 0:
-            diffStr = '+' + diffStr
+        lastStr = diffStr = str(round(last, 0))
+        if last > 0:
+            lastStr = "+" + lastStr
 
-        p_list = {'name': p.name, 'matches': p.matches.count(), 'diff': diffStr, 'rating': p.rating}
+        p_list = {'name': p.name, 'last': lastStr, 'rating': p.rating}
         player_list.append(p_list)
 
     playernames = list(players.values_list('name', flat=True))
-    past_20_matches = league_.matches.order_by('-time')[:20]
+    past_20_matches = league_.matches.order_by('-time')[:200]
     return render(request, 'league.html', {'league': league_, 
                                             'player_list': player_list, 
                                             'playernames' : playernames, 
@@ -65,25 +59,51 @@ def add_match(request, league_name):
         winRating = redRating
         loseRating = blueRating
     else:
-        winRating = redRating
-        loseRating = blueRating
+        winRating = blueRating
+        loseRating = redRating
 
     if redScore + blueScore > 18:
         diff = 1
     else:
         diff = abs(redScore - blueScore)
 
-    km = k_mult(min(6, diff), winRating, loseRating)
+    km = k_mult(adjustedDiff(diff), winRating, loseRating)
 
     newRedElo = elo(redRating, redExp, redScore > blueScore, km)
     newBlueElo = elo(blueRating, blueExp, blueScore > redScore, km)
+    rmp.delta = newRedElo - redRating
+    bmp.delta = newBlueElo - blueRating
 
     redPlayer.rating = newRedElo
     bluePlayer.rating = newBlueElo
     redPlayer.save()
     bluePlayer.save()
+    rmp.save()
+    bmp.save()
     
     return redirect(f'/l/{league_name}/')
+
+def adjustedDiff(diff):
+    if diff == 1:
+        return 1.5
+    elif diff == 2:
+        return 1.6
+    elif diff == 3:
+        return 1.7
+    elif diff == 4:
+        return 1.8
+    elif diff == 5:
+        return 2
+    elif diff == 6:
+        return 2.3
+    elif diff == 7:
+        return 2.8
+    elif diff == 8:
+        return 3.6
+    elif diff == 9:
+        return 4.9
+    else:
+        return 7
 
 def expected(A, B):
     """
