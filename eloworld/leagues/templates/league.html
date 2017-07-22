@@ -24,13 +24,15 @@ $( function() {
             <h2>Ranking</h2>
             <table class="table">
                 <thead class="thead-inverse">
+                    <th>#</th>
                     <th>Name</th>
                     <th>Weekly Δ</th>
                     <th>Rating</th>
                 </thead>
                 <tbody>
                 {% for player in player_list %}
-                    <tr><td class="col-md-8 col-sm-8">{{ player.name }}</td>
+                    <tr><td class="col-md-1 col-sm-1">{{ forloop.counter }}</td>
+                        <td class="col-md-7 col-sm-7">{{ player.name }}</td>
                         <td class="col-md-2 col-sm-2">{{ player.last }}</td>
                         <td class="col-md-2 col-sm-2 score" >{{ player.rating }}</td>
                     </tr>
