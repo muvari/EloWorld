@@ -8,12 +8,15 @@ def home_page(request):
 def view_league(request, league_name):
     league_ = League.objects.get(name=league_name)
 
+    origin = datetime.date(2017, 7, 7)
+    fDoW = datetime.date.today() - datetime.timedelta(days=datetime.date.today().isoweekday() % 7)
+
     player_list = []
     players = league_.players.order_by('-rating')
     for p in players:
-        history = list(p.get_rating_history().order_by('date_created'))
-        if len(history) > 1:
-            last = p.rating - history[len(history) - 2].field_value 
+        history = list(p.get_rating_history().filter(date_created__range=[origin, fDoW]).order_by('date_created'))
+        if len(history) > 0:
+            last = p.rating - history[len(history) - 1].field_value 
         else:
             last = p.rating - 1500
 
