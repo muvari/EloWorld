@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %} - {{league.label}} {%endblock%}
+{% load static %}
+{% block scripts %}
+{% endblock %}
+
+{% block cont %}
+<div class="row">
+    <h1>{{player.name}} - {{player.rating}}</h1>
+    <div class="col-md-12 col-lg-12 col-sm-12 jumbotron">
+        <div class="col-xs-4 col-sm-2 placeholder">
+            <h3>GP</h3>
+            <p style="text-align: center">{{gp}}</p>
+        </div>
+        <div class="col-xs-4 col-sm-2 placeholder">
+            <h3>Wins</h3>
+            <p style="text-align: center">{{wins}}</p>
+        </div>
+        <div class="col-xs-4 col-sm-2 placeholder">
+            <h3>Losses</h3>
+            <p style="text-align: center">{{losses}}</p>
+        </div>
+        <div class="col-xs-4 col-sm-2 placeholder">
+            <h3>Red</h3>
+            <p style="text-align: center">{{redStr}}</p>
+        </div>
+        <div class="col-xs-4 col-sm-2 placeholder">
+            <h3>Blue</h3>
+            <p style="text-align: center">{{blueStr}}</p>
+        </div>
+        <div class="col-xs-4 col-sm-2 placeholder">
+            <h3>OT</h3>
+            <p style="text-align: center">{{otStr}}</p>
+        </div>
+    </div>
+    <div class="row" name="match_history">
+            <br/>
+            <h2>Match History</h2>
+            <h6>(past 50 games)</h6>
+            <table class="table" >
+                <thead class="thead-inverse">
+                    <th>Date</th>
+                    <th>Red (Δ)</th>
+                    <th></th>
+                    <th></th>
+                    <th>Blue (Δ)</th>
+                </thead>
+                <tbody>
+                {% for match in matches%}
+                    <tr><td class="match_date">{{ match.time }}</td>
+                        <td class="red_table">{{ match.matchparticipant_set.all.0.player.name}} ({{ match.matchparticipant_set.all.0.delta}})</td>
+                        <td class="red_table score">{{ match.matchparticipant_set.all.0.score}}</td>
+                        <td class="blue_table score">{{ match.matchparticipant_set.all.1.score}}</td>
+                        <td class="blue_table">{{ match.matchparticipant_set.all.1.player.name}} ({{ match.matchparticipant_set.all.1.delta}})</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+</div>
+{% endblock %}

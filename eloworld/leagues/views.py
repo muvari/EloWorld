@@ -26,7 +26,7 @@ def view_league(request, league_name):
         if last > 0:
             lastStr = "+" + lastStr
 
-        p_list = {'name': p.name, 'last': lastStr, 'rating': p.rating}
+        p_list = {'id': p.id, 'name': p.name, 'last': lastStr, 'rating': p.rating}
         player_list.append(p_list)
         record_list[p.name] = get_records(league_, p)
 
@@ -110,3 +110,56 @@ def get_records(league_, player):
         records[o_name] = records.get(o_name, 0) + val
 
     return records
+
+def view_player(request, league_name, player_id):
+    league_ = League.objects.get(name=league_name)
+    player = Player.objects.get(id=player_id)
+
+    gp = player.matches.all()
+    wins = 0
+    losses = 0
+    redwins = 0
+    redlosses = 0
+    bluewins = 0
+    bluelosses = 0
+    otwins = 0
+    otlosses = 0
+    for m in gp:
+        if player.name == m.matchparticipant_set.all()[0].player.name:
+            pl = m.matchparticipant_set.all()[0]
+            opp = m.matchparticipant_set.all()[1]
+        else:
+            pl = m.matchparticipant_set.all()[1]
+            opp = m.matchparticipant_set.all()[0]   
+
+        if pl.score > opp.score: #Win
+            wins = wins + 1
+            if pl.wasRed:
+                redwins = redwins + 1
+            else:
+                bluewins = bluewins + 1
+            if pl.score + opp.score > 18:
+                otwins = otwins +1
+        else:                   #Loss
+            losses = losses + 1
+            if pl.wasRed:
+                redlosses = redlosses + 1
+            else:
+                bluelosses = bluelosses + 1
+            if pl.score + opp.score > 18:
+                otlosses = otlosses + 1
+
+
+    redStr = str(redwins) + "-" + str(redlosses)
+    blueStr = str(bluewins) + "-" + str(bluelosses)
+    otStr = str(otwins) + "-" + str(otlosses)
+    past_50_matches = player.matches.order_by('-time')[:50]
+    return render(request, 'player.html', {'league': league_, 
+                                            'player': player, 
+                                            'gp': gp.count,
+                                            'wins': wins,
+                                            'losses': losses,
+                                            'redStr': redStr,
+                                            'blueStr': blueStr,
+                                            'otStr': otStr,
+                                            'matches': past_50_matches})

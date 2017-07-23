@@ -33,7 +33,7 @@ $( function() {
                 <tbody>
                 {% for player in player_list %}
                     <tr class="player-row" id="{{ player.name }}"><td class="col-md-1 col-sm-1">{{ forloop.counter }}</td>
-                        <td class="col-md-7 col-sm-7">{{ player.name }}</td>
+                        <td class="col-md-7 col-sm-7"><a href="p/{{ player.id }}">{{ player.name }}</a></td>
                         <td class="col-md-2 col-sm-2">{{ player.last }}</td>
                         <td class="col-md-2 col-sm-2 score" >{{ player.rating }}</td>
                     </tr>
