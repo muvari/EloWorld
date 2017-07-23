@@ -2,6 +2,7 @@
 {% block title %} - {{league.label}} {%endblock%}
 {% load static %}
 {% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
 {% endblock %}
 {% block links %}
     <li><a href="../" style="text-transform: capitalize;">{{league.name}}</a></li> 
@@ -36,6 +37,12 @@
             <p style="text-align: center">{{otStr}}</p>
         </div>
     </div>
+    <div class="panel-body"name="chart_div">
+            <h2>Rating History</h2>
+            <div>
+            <canvas id="myChart" style="height: 200px"></canvas>
+            </div>
+    </div>
     <div class="row" name="match_history">
             <br/>
             <h2>Match History</h2>
@@ -61,4 +68,32 @@
             </table>
         </div>
 </div>
+<script>
+var ctx = document.getElementById("myChart").getContext('2d');
+var maxV = {{maxV}}
+var minV = {{minV}}
+var chart = new Chart(ctx, {
+    type: 'line',
+
+    data: {
+        labels: {{ historyDates|safe }},
+        datasets: [{
+            label: "Rating",
+            borderColor: 'rgb(255, 99, 132)',
+            data: {{ historyValues|safe}},
+        }],
+    },
+
+    options: {scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: false,
+                    steps: 10,
+                    max: maxV,
+                    min: minV,
+                }
+            }]
+        }}
+});
+</script>
 {% endblock %}

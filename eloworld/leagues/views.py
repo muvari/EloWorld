@@ -154,6 +154,32 @@ def view_player(request, league_name, player_id):
     blueStr = str(bluewins) + "-" + str(bluelosses)
     otStr = str(otwins) + "-" + str(otlosses)
     past_50_matches = player.matches.order_by('-time')[:50]
+
+    history = list(player.get_rating_history())
+    history_dates = []
+    history_values = []
+
+    maxV = 0
+    minV = 999999
+    for i, h in enumerate(history):
+        if i == 0:
+            history_dates.append("Start")
+        else:
+            history_dates.append("Game " + str(i))
+        history_values.append(h.field_value)
+        if h.field_value > maxV:
+            maxV = h.field_value
+        if h.field_value < minV:
+            minV = h.field_value
+
+    maxV = math.ceil(maxV / 10.0) * 10.0
+    minV = math.floor(minV / 10.0) * 10.0
+    maxDiff = maxV - 1500
+    minDiff = 1500 - minV
+    if maxDiff > minDiff:
+        minV = 1500 - maxDiff
+    else:
+        maxV = 1500 + minDiff
     return render(request, 'player.html', {'league': league_, 
                                             'player': player, 
                                             'gp': gp.count,
@@ -162,4 +188,8 @@ def view_player(request, league_name, player_id):
                                             'redStr': redStr,
                                             'blueStr': blueStr,
                                             'otStr': otStr,
-                                            'matches': past_50_matches})
+                                            'matches': past_50_matches,
+                                            'historyDates': history_dates,
+                                            'historyValues': history_values,
+                                            'maxV': maxV,
+                                            'minV': minV},)
