@@ -13,6 +13,7 @@ def view_league(request, league_name):
     fDoW = datetime.date.today() - datetime.timedelta(days=datetime.date.today().isoweekday() % 7)
 
     player_list = []
+    record_list = dict()
     players = league_.players.order_by('-rating')
     for p in players:
         history = list(p.get_rating_history().filter(date_created__range=[origin, fDoW]).order_by('date_created'))
@@ -27,13 +28,15 @@ def view_league(request, league_name):
 
         p_list = {'name': p.name, 'last': lastStr, 'rating': p.rating}
         player_list.append(p_list)
+        record_list[p.name] = get_records(league_, p)
 
     playernames = list(players.values_list('name', flat=True))
     past_20_matches = league_.matches.order_by('-time')[:20]
     return render(request, 'league.html', {'league': league_, 
                                             'player_list': player_list, 
                                             'playernames' : playernames, 
-                                            'matches' : past_20_matches })
+                                            'matches' : past_20_matches,
+                                            'records': record_list })
     
 def new_league(request):
     lName = request.POST['league_name'].lower()
@@ -86,3 +89,24 @@ def add_match(request, league_name):
     bmp.save()
     
     return redirect(f'/l/{league_name}/')
+
+def get_records(league_, player):
+    records = dict()
+    for m in player.matches.all():
+        if player.name == m.matchparticipant_set.all()[0].player.name:
+            p_score = m.matchparticipant_set.all()[0].score
+            o_score = m.matchparticipant_set.all()[1].score
+            o_name = m.matchparticipant_set.all()[1].player.name
+        else:
+            p_score = m.matchparticipant_set.all()[1].score
+            o_score = m.matchparticipant_set.all()[0].score
+            o_name = m.matchparticipant_set.all()[0].player.name
+
+        if p_score > o_score:
+            val = 1
+        else:
+            val = -1
+
+        records[o_name] = records.get(o_name, 0) + val
+
+    return records

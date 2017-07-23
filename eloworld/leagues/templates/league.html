@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
+{% block title %} - {{league.label}} {%endblock%}
 {% load static %}
 {% block scripts %}
-<script>
+<script>    
+var records = {{records|safe}};
 $( function() {
     var names = {{playernames|safe}};
     $( "#redname" ).autocomplete({
@@ -12,12 +14,11 @@ $( function() {
     });
   } );
 
-
 </script>
 {% endblock %}
 
 {% block cont %}
-<div class="row">
+<div class="row leaguebody" id="{{league.name}}">
     <h1>{{league.label}}</h1>
     <div class="col-lg-6 form-group">
         <div class="row">
@@ -31,7 +32,7 @@ $( function() {
                 </thead>
                 <tbody>
                 {% for player in player_list %}
-                    <tr><td class="col-md-1 col-sm-1">{{ forloop.counter }}</td>
+                    <tr class="player-row" id="{{ player.name }}"><td class="col-md-1 col-sm-1">{{ forloop.counter }}</td>
                         <td class="col-md-7 col-sm-7">{{ player.name }}</td>
                         <td class="col-md-2 col-sm-2">{{ player.last }}</td>
                         <td class="col-md-2 col-sm-2 score" >{{ player.rating }}</td>
@@ -39,6 +40,20 @@ $( function() {
                 {% endfor %}
                 </tbody>
             </table>
+            <div class="row" style="text-align: center">
+                <div class="col-md-4 col-lg-4 col-sm-4">
+                <table class="table-condensed">
+                <thead><th>Hover legend</th></thead>
+                <tbody>
+                    <tr style="background-color: #CEE9CE"><td>Won more</td></tr>
+                    <tr style="background-color:#FFB7B3"><td>Lost more</td></tr>
+                    <tr style="background-color: #9EE5FF"><td>Equal</td></tr>
+                    <tr style="background-color: #ddd"><td>Selected</td></tr>
+                    <tr style="background-color: white"><td>Never played</td></tr>
+                </tbody>
+                </table>
+            </div>
+            </div>
         </div>
     </div>
     <div class="col-lg-6 form-group">
@@ -103,4 +118,5 @@ $( function() {
         </div>
     </div>
 </div>
+<script src="/static/league.js"></script>
 {% endblock %}
