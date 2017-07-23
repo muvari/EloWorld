@@ -3,7 +3,10 @@
 {% load static %}
 {% block scripts %}
 {% endblock %}
-
+{% block links %}
+    <li><a href="../" style="text-transform: capitalize;">{{league.name}}</a></li> 
+    <li><a href="#">{{player.name}}</a></li> 
+{% endblock %}
 {% block cont %}
 <div class="row">
     <h1>{{player.name}} - {{player.rating}}</h1>

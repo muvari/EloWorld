@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block title %} - {{league.label}} {%endblock%}
+{% block links %}
+    <li><a href="#" style="text-transform: capitalize;">{{league.name}}</a></li> 
+{% endblock %}
 {% load static %}
 {% block scripts %}
 <script>    
