@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from leagues.models import League, Match, Player, MatchParticipant
 from elo import elo
 import datetime, math
+from django.utils import timezone
 
 def home_page(request):
     return render(request, 'home.html')
@@ -17,6 +18,11 @@ def view_league(request, league_name):
     players = league_.players.order_by('-rating')
     for p in players:
         history = list(p.get_rating_history().filter(date_created__range=[origin, fDoW]).order_by('date_created'))
+
+        tenDay = datetime.datetime.utcnow() - datetime.timedelta(days=10)
+        if p.get_rating_history().order_by('-date_created')[0].date_created < tenDay.replace(tzinfo=timezone.utc):
+            continue
+
         if len(history) > 0:
             last = p.rating - history[len(history) - 1].field_value 
         else:
