@@ -96,6 +96,29 @@ def add_match(request, league_name):
     
     return redirect(f'/l/{league_name}/')
 
+def delete_last_match(request, league_name):
+    league_ = League.objects.get(name=league_name)
+    lastMatch = league_.matches.latest('time')
+
+    playerOne = lastMatch.matchparticipant_set.all()[0].player
+    playerTwo = lastMatch.matchparticipant_set.all()[1].player
+
+    playerOne.get_rating_history().order_by('-date_created')[0].delete()
+    playerTwo.get_rating_history().order_by('-date_created')[0].delete()
+
+    playerOne.rating = playerOne.get_rating_history().order_by('-date_created')[0].field_value
+    playerTwo.rating = playerTwo.get_rating_history().order_by('-date_created')[0].field_value
+
+    playerOne.save()
+    playerTwo.save()
+
+    playerOne.get_rating_history().order_by('-date_created')[0].delete()
+    playerTwo.get_rating_history().order_by('-date_created')[0].delete()
+    
+    lastMatch.delete()
+
+    return redirect(f'/l/{league_name}/')
+
 def get_records(league_, player):
     records = dict()
     for m in player.matches.all():

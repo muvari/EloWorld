@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^(\w+)/$', views.view_league, name='view_league'),
     url(r'^(\w+)/add_match$', views.add_match, name='add_match'),
     url(r'^(\w+)/p/(\d+)$', views.view_player, name='view_player'),
+    url(r'^(\w+)/delete_match$', views.delete_last_match, name='delete_last_match'),
 ]
